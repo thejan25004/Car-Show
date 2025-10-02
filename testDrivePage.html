@@ -1,0 +1,3492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Drive - AUTOLUX</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    :root {
+      --primary-yellow: #ffe700;
+      --primary-red: #B22222;
+      --primary-blue: #0046AD;
+      --primary-black: #9d9c9c;
+      --dark-bg: #121212;
+      --darker-bg: #080808;
+      --light-text: #FFFFFF;
+      --gray-text: #AAAAAA;
+      --transition-speed: 0.6s;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--dark-bg);
+      color: var(--light-text);
+      overflow-x: hidden;
+      transition: background-color 0.5s ease;
+    }
+
+    /* Loader */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--darker-bg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-content {
+      text-align: center;
+    }
+
+    .loader-spinner {
+      border: 5px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      border-top: 5px solid var(--primary-yellow);
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      transition: background-color 0.3s ease, padding 0.3s ease;
+    }
+
+    .header.scrolled {
+      background-color: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 15px 40px;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 24px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .menu-btn {
+      background: none;
+      border: none;
+      color: var(--light-text);
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 200;
+      transition: transform 0.3s ease;
+    }
+
+    .menu-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      color: var(--light-text);
+      text-decoration: none;
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 14px;
+      letter-spacing: 1px;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: currentColor;
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .search-btn {
+      background: none;
+      border: none;
+      color: var(--light-text);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 40px;
+      transition: transform 0.3s ease;
+    }
+
+    .search-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.95);
+      z-index: 150;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transform: translateX(-100%);
+      transition: transform 0.5s ease;
+    }
+
+    .mobile-menu.active {
+      transform: translateX(0);
+    }
+
+    .mobile-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      text-align: center;
+    }
+
+    .mobile-nav a {
+      color: var(--light-text);
+      text-decoration: none;
+      font-size: 24px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: color 0.3s ease;
+      padding: 10px;
+    }
+
+    .mobile-nav a:hover {
+      color: var(--primary-yellow);
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://via.placeholder.com/1920x1080') no-repeat center center;
+      background-size: cover;
+    }
+
+    .hero-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7));
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 800px;
+      padding: 0 20px;
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      margin-bottom: 20px;
+      color: var(--primary-yellow);
+      animation: fadeInDown 1s ease-out;
+    }
+
+    .hero-title {
+      font-size: 64px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .hero-description {
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    .hero-btn {
+      display: inline-block;
+      padding: 15px 40px;
+      background-color: var(--primary-yellow);
+      color: #000;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 1px;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      animation: fadeIn 1.4s ease-out;
+    }
+
+    .hero-btn:hover {
+      background-color: #fff;
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+
+    /* Experience Section */
+    .experience-section {
+      padding: 100px 40px;
+      background-color: var(--darker-bg);
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      font-size: 16px;
+      color: var(--gray-text);
+      max-width: 700px;
+      margin: 0 auto 60px;
+      line-height: 1.6;
+    }
+
+    .experience-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .experience-card {
+      background-color: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 40px 30px;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .experience-card:hover {
+      transform: translateY(-10px);
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    .experience-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 0;
+      background-color: var(--primary-yellow);
+      transition: height 0.5s ease;
+    }
+
+    .experience-card:hover::before {
+      height: 100%;
+    }
+
+    .experience-icon {
+      font-size: 48px;
+      color: var(--primary-yellow);
+      margin-bottom: 20px;
+    }
+
+    .experience-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .experience-description {
+      color: var(--gray-text);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .experience-link {
+      color: var(--primary-yellow);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: gap 0.3s ease;
+    }
+
+    .experience-link:hover {
+      gap: 10px;
+    }
+
+    /* Car Selector */
+    .car-selector {
+      padding: 100px 40px;
+      background-color: var(--dark-bg);
+    }
+
+    .selector-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .selector-tabs {
+      display: flex;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 50px;
+      overflow-x: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .selector-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .selector-tab {
+      padding: 15px 30px;
+      font-size: 16px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--gray-text);
+      cursor: pointer;
+      background: none;
+      border: none;
+      position: relative;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .selector-tab::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background-color: var(--primary-yellow);
+      transition: width 0.3s ease;
+    }
+
+    .selector-tab:hover,
+    .selector-tab.active {
+      color: var(--light-text);
+    }
+
+    .selector-tab.active::after {
+      width: 100%;
+    }
+
+    .car-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 30px;
+    }
+
+    .car-card {
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      position: relative;
+    }
+
+    .car-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .car-image-container {
+      height: 220px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .car-tag {
+      position: absolute;
+      top: 20px;
+      right: 0;
+      background-color: var(--primary-yellow);
+      color: #000;
+      padding: 8px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      z-index: 5;
+    }
+
+    .car-tag.popular {
+      background-color: var(--primary-red);
+      color: white;
+    }
+
+    .car-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .car-card:hover .car-image {
+      transform: scale(1.1);
+    }
+
+    .car-info {
+      padding: 25px;
+    }
+
+    .car-name {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .car-category {
+      font-size: 14px;
+      color: var(--primary-yellow);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+    }
+
+    .car-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    .feature i {
+      color: var(--primary-yellow);
+    }
+
+    .car-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .car-availability {
+      font-size: 14px;
+      color: var(--gray-text);
+    }
+
+    .available {
+      color: #4CAF50;
+    }
+
+    .limited {
+      color: #FFC107;
+    }
+
+    .car-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background-color: var(--primary-yellow);
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .car-btn:hover {
+      background-color: #fff;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Steps Section */
+    .steps-section {
+      padding: 100px 40px;
+      background-color: var(--darker-bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .steps-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.1;
+      z-index: 0;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .steps-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .steps-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-top: 50px;
+    }
+
+    .step-item {
+      flex: 1;
+      min-width: 250px;
+      background-color: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 30px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .step-item:hover {
+      transform: translateY(-10px);
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    .step-number {
+      position: absolute;
+      top: -20px;
+      left: 30px;
+      width: 40px;
+      height: 40px;
+      background-color: var(--primary-yellow);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: #000;
+    }
+
+    .step-icon {
+      font-size: 36px;
+      color: var(--primary-yellow);
+      margin-bottom: 20px;
+    }
+
+    .step-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .step-description {
+      color: var(--gray-text);
+      line-height: 1.6;
+    }
+
+    /* Booking Form Section */
+    .booking-section {
+      padding: 100px 40px;
+      background: linear-gradient(to right, var(--dark-bg), rgba(0,0,0,0.9));
+    }
+
+    .booking-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 50px;
+    }
+
+    .booking-content {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .booking-title {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .booking-description {
+      color: var(--gray-text);
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .booking-highlights {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .highlight-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+      background-color: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .highlight-item:hover {
+      background-color: rgba(255,255,255,0.1);
+      transform: translateY(-5px);
+    }
+
+    .highlight-icon {
+      font-size: 24px;
+      color: var(--primary-yellow);
+    }
+
+    .highlight-text {
+      font-weight: 500;
+    }
+
+    .booking-form-container {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .booking-form {
+      background-color: rgba(0,0,0,0.5);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    .form-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 12px 15px;
+      background-color: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 5px;
+      color: var(--light-text);
+      transition: border-color 0.3s ease;
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--primary-yellow);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+    }
+
+    .form-checkbox {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .form-checkbox input {
+      margin-top: 3px;
+    }
+
+    .form-checkbox label {
+      color: var(--gray-text);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .form-checkbox a {
+      color: var(--primary-yellow);
+      text-decoration: none;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 15px;
+      background-color: var(--primary-yellow);
+      color: #000;
+      border: none;
+      border-radius: 5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      background-color: #fff;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    /* Testimonials */
+    .testimonials {
+      padding: 100px 40px;
+      background-color: var(--dark-bg);
+    }
+
+    .testimonials-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .testimonial-carousel {
+      margin-top: 50px;
+      position: relative;
+      padding: 0 40px;
+    }
+
+    .testimonial-slide {
+      padding: 20px;
+      display: none;
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    .testimonial-slide.active {
+      display: block;
+    }
+
+    .testimonial-card {
+      background-color: rgba(255,255,255,0.05);
+      border-radius: 15px;
+      padding: 30px;
+      position: relative;
+    }
+
+    .testimonial-card::before {
+      content: '\201C';
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 80px;
+      opacity: 0.2;
+      font-family: Georgia, serif;
+      line-height: 0;
+    }
+
+    .testimonial-text {
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .author-image {
+      width: 10%;
+      height: 10%;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    .author-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .author-info {
+      flex: 1;
+    }
+
+    .author-name {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .author-title {
+      font-size: 14px;
+      color: var(--gray-text);
+    }
+
+    .testimonial-rating {
+      color: var(--primary-yellow);
+      font-size: 16px;
+      margin-top: 5px;
+    }
+
+    .carousel-controls {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 40px;
+    }
+
+    .carousel-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: rgba(255,255,255,0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .carousel-dot.active {
+      background-color: var(--primary-yellow);
+      transform: scale(1.2);
+    }
+
+    .carousel-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: var(--gray-text);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 5;
+    }
+
+    .carousel-button:hover {
+      color: var(--primary-yellow);
+    }
+
+    .carousel-prev {
+      left: 0;
+    }
+
+    .carousel-next {
+      right: 0;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      padding: 80px 40px;
+      background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://via.placeholder.com/1920x800') no-repeat center center;
+      background-size: cover;
+      background-attachment: fixed;
+      text-align: center;
+    }
+
+    .cta-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .cta-title {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .cta-description {
+      font-size: 18px;
+      color: var(--gray-text);
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .cta-btn {
+      padding: 15px 40px;
+      font-size: 16px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cta-btn.primary {
+      background-color: var(--primary-yellow);
+      color: #000;
+    }
+
+    .cta-btn.secondary {
+      background-color: transparent;
+      border: 2px solid var(--light-text);
+      color: var(--light-text);
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+
+    .cta-btn.primary:hover {
+      background-color: #fff;
+    }
+
+    .cta-btn.secondary:hover {
+      background-color: var(--light-text);
+      color: #000;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      padding: 100px 40px;
+      background-color: var(--darker-bg);
+    }
+
+    .faq-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .accordion {
+      margin-top: 50px;
+    }
+
+    .accordion-item {
+      background-color: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      margin-bottom: 15px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .accordion-item:hover {
+      background-color: rgba(255,255,255,0.08);
+    }
+
+    .accordion-header {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .accordion-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .accordion-icon {
+      transition: transform 0.3s ease;
+    }
+
+    .accordion-item.active .accordion-icon {
+      transform: rotate(180deg);
+    }
+
+    .accordion-content {
+      padding: 0 20px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+
+    .accordion-item.active .accordion-content {
+      max-height: 500px;
+      padding-bottom: 20px;
+    }
+
+    .accordion-text {
+      color: var(--gray-text);
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    .footer {
+      background-color: var(--darker-bg);
+      padding: 80px 40px 30px;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+    }
+
+    .footer-logo {
+      font-weight: 700;
+      font-size: 24px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .footer-about {
+      margin-bottom: 20px;
+      color: var(--gray-text);
+      line-height: 1.6;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--light-text);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background-color: var(--primary-yellow);
+      color: #000;
+      transform: translateY(-5px);
+      box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    }
+
+    .footer-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .footer-title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 50px;
+      height: 2px;
+      background-color: var(--primary-yellow);
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      color: var(--gray-text);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary-yellow);
+      transform: translateX(5px);
+    }
+
+    .footer-contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .contact-icon {
+      font-size: 18px;
+      color: var(--primary-yellow);
+    }
+
+    .contact-text {
+      color: var(--gray-text);
+      line-height: 1.4;
+    }
+
+    .footer-bottom {
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      text-align: center;
+    }
+
+    .copyright {
+      color: var(--gray-text);
+      font-size: 14px;
+    }
+
+    /* Test Drive Section Styles */
+    .test-drive-hero {
+      height: 70vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .test-drive-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .test-drive-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8));
+      z-index: 0;
+    }
+
+    .test-drive-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 800px;
+      padding: 0 20px;
+    }
+
+    .test-drive-subtitle {
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      margin-bottom: 20px;
+      color: var(--primary-yellow);
+      animation: fadeInDown 1s ease-out;
+    }
+
+    .test-drive-title {
+      font-size: 64px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .test-drive-description {
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    /* Car Selection Showcase */
+    .car-showcase {
+      padding: 100px 40px;
+      background-color: var(--dark-bg);
+    }
+
+    .showcase-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 50px;
+    }
+
+    .car-preview {
+      position: relative;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: all 0.4s ease;
+    }
+
+    .car-preview:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .car-preview-image {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .car-preview:hover .car-preview-image {
+      transform: scale(1.1);
+    }
+
+    .car-preview-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.8));
+      transform: translateY(100%);
+      transition: transform 0.4s ease;
+    }
+
+    .car-preview:hover .car-preview-overlay {
+      transform: translateY(0);
+    }
+
+    .preview-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .preview-subtitle {
+      color: var(--primary-yellow);
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .preview-specs {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: var(--gray-text);
+    }
+
+    .preview-btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 8px 15px;
+      background-color: var(--primary-yellow);
+      color: #000;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .preview-btn:hover {
+      background-color: #fff;
+    }
+
+    /* 360 View Section */
+    .view-360-section {
+      padding: 100px 40px;
+      background-color: var(--darker-bg);
+    }
+
+    .view-360-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 50px;
+    }
+
+    .view-360-content {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .view-360-display {
+      flex: 2;
+      min-width: 500px;
+      position: relative;
+      height: 400px;
+      border-radius: 15px;
+      overflow: hidden;
+      background-color: rgba(255,255,255,0.05);
+    }
+
+    .car-360-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .car-360-image {
+      max-width: 150%;
+      max-height: 110%;
+      object-fit: contain;
+    }
+
+    .car-360-controls {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      background-color: rgba(0,0,0,0.5);
+      padding: 10px 20px;
+      border-radius: 30px;
+    }
+
+    .control-button {
+      background: none;
+      border: none;
+      color: var(--light-text);
+      font-size: 18px;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .control-button:hover {
+      color: var(--primary-yellow);
+    }
+
+    .car-360-slider {
+      width: 200px;
+      height: 4px;
+      background-color: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .slider-handle {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background-color: var(--primary-yellow);
+      border-radius: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      left: 50%;
+      cursor: grab;
+      transition: background-color 0.3s ease;
+    }
+
+    .slider-handle:hover {
+      background-color: #fff;
+    }
+
+    .car-color-options {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      justify-content: center;
+    }
+
+    .color-option {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .color-option:hover {
+      transform: scale(1.2);
+    }
+
+    .color-option.active {
+      border: 2px solid var(--primary-yellow);
+      transform: scale(1.2);
+    }
+
+    .color-red {
+      background-color: #e74c3c;
+    }
+
+    .color-blue {
+      background-color: #3498db;
+    }
+
+    .color-black {
+      background-color: #333333;
+    }
+
+    .color-white {
+      background-color: #f5f5f5;
+    }
+
+    .color-silver {
+      background-color: #bdc3c7;
+    }
+
+    /* Features Section */
+    .features-section {
+      padding: 100px 40px;
+      background-color: var(--dark-bg);
+    }
+
+    .features-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .features-tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 50px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      overflow-x: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .features-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .feature-tab {
+      padding: 15px 30px;
+      background: none;
+      border: none;
+      color: var(--gray-text);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .feature-tab::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background-color: var(--primary-yellow);
+      transition: width 0.3s ease;
+    }
+
+    .feature-tab:hover,
+    .feature-tab.active {
+      color: var(--light-text);
+    }
+
+    .feature-tab.active::after {
+      width: 100%;
+    }
+
+    .features-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .feature-image {
+      flex: 1;
+      min-width: 300px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .feature-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .feature-details {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .feature-title {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .feature-description {
+      color: var(--gray-text);
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .feature-list {
+      list-style: none;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .feature-item:last-child {
+      border-bottom: none;
+    }
+
+    .feature-icon {
+      color: var(--primary-yellow);
+      font-size: 24px;
+      margin-top: 5px;
+    }
+
+    .feature-text h4 {
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+
+    .feature-text p {
+      color: var(--gray-text);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Test Drive Booking */
+    .test-drive-booking {
+      padding: 100px 40px;
+      background: linear-gradient(to right, var(--darker-bg), rgba(18,18,18,0.9));
+    }
+
+    .booking-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 50px;
+    }
+
+    .booking-image {
+      flex: 1;
+      min-width: 300px;
+      position: relative;
+      border-radius: 15px;
+      overflow: hidden;
+      height: 600px;
+    }
+
+    .booking-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .booking-form-wrapper {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .booking-steps {
+      position: relative;
+      margin-bottom: 50px;
+    }
+
+    .steps-track {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .steps-track::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    .steps-track::after {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 0;
+      width: 33.33%;
+      height: 2px;
+      background-color: var(--primary-yellow);
+      transition: width 0.3s ease;
+    }
+
+    .steps-track.step-2::after {
+      width: 66.66%;
+    }
+
+    .steps-track.step-3::after {
+      width: 100%;
+    }
+
+    .step {
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-circle {
+      width: 30px;
+      height: 30px;
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 600;
+      color: var(--gray-text);
+      margin-bottom: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .step.active .step-circle {
+      background-color: var(--primary-yellow);
+      color: #000;
+    }
+
+    .step.completed .step-circle {
+      background-color: var(--primary-yellow);
+      color: #000;
+    }
+
+    .step.completed .step-circle::after {
+      content: '\f00c';
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 900;
+    }
+
+    .step-label {
+      font-size: 14px;
+      text-align: center;
+      color: var(--gray-text);
+      transition: color 0.3s ease;
+    }
+
+    .step.active .step-label {
+      color: var(--light-text);
+      font-weight: 600;
+    }
+
+    .booking-step-content {
+      display: none;
+    }
+
+    .booking-step-content.active {
+      display: block;
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .step-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+
+    .car-selection {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .car-option {
+      background-color: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .car-option:hover {
+      background-color: rgba(255,255,255,0.1);
+      transform: translateY(-5px);
+    }
+
+    .car-option.selected {
+      border: 2px solid var(--primary-yellow);
+    }
+
+    .car-option img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 15px;
+    }
+
+    .car-option h4 {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .car-option p {
+      font-size: 14px;
+      color: var(--gray-text);
+    }
+
+    .date-time-selection {
+      margin-bottom: 30px;
+    }
+
+    .date-selector {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .date-day {
+      text-align: center;
+      padding: 15px 0;
+      background-color: rgba(255,255,255,0.05);
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .date-day:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    .date-day.selected {
+      background-color: var(--primary-yellow);
+      color: #000;
+    }
+
+    .date-day.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .date-number {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .date-weekday {
+      font-size: 12px;
+      color: var(--gray-text);
+    }
+
+    .selected .date-weekday {
+      color: rgba(0,0,0,0.7);
+    }
+
+    .time-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 10px;
+    }
+
+    .time-option {
+      text-align: center;
+      padding: 15px 0;
+      background-color: rgba(255,255,255,0.05);
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .time-option:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    .time-option.selected {
+      background-color: var(--primary-yellow);
+      color: #000;
+    }
+
+    .time-option.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .personal-info-form {
+      margin-bottom: 30px;
+    }
+
+    .confirmation-message {
+      text-align: center;
+      padding: 50px 0;
+    }
+
+    .confirmation-icon {
+      font-size: 80px;
+      color: var(--primary-yellow);
+      margin-bottom: 30px;
+      animation: bounceIn 1s ease;
+    }
+
+    .confirmation-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .confirmation-text {
+      color: var(--gray-text);
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    .booking-details {
+      background-color: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+
+    .detail-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .detail-item:last-child {
+      border-bottom: none;
+    }
+
+    .detail-label {
+      color: var(--gray-text);
+    }
+
+    .detail-value {
+      font-weight: 600;
+    }
+
+    .step-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+
+    .step-btn {
+      padding: 12px 25px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .prev-btn {
+      background-color: rgba(255,255,255,0.1);
+      color: var(--light-text);
+    }
+
+    .prev-btn:hover {
+      background-color: rgba(255,255,255,0.2);
+    }
+
+    .next-btn {
+      background-color: var(--primary-yellow);
+      color: #000;
+    }
+
+    .next-btn:hover {
+      background-color: #fff;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+
+
+    /* Footer */
+    .footer {
+      background-color: var(--darker-bg);
+      padding: 80px 40px 30px;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+
+    .footer-column h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .footer-column h3::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 30px;
+      height: 2px;
+      background-color: var(--primary-yellow);
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-links a {
+      color: var(--gray-text);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary-yellow);
+    }
+
+    .footer-contact {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .contact-item {
+      display: flex;
+      gap: 10px;
+      color: var(--gray-text);
+    }
+
+    .contact-item i {
+      color: var(--primary-yellow);
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .social-link {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: var(--light-text);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background-color: var(--primary-yellow);
+      color: #000;
+      transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 30px;
+      margin-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--gray-text);
+      font-size: 14px;
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-bottom-links a {
+      color: var(--gray-text);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-bottom-links a:hover {
+      color: var(--primary-yellow);
+    }
+
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: var(--primary-yellow);
+      color: #000;
+      font-size: 20px;
+      text-decoration: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 99;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .test-drive-title {
+        font-size: 42px;
+      }
+
+      .car-360-display {
+        min-width: 100%;
+        height: 300px;
+      }
+
+      .date-selector {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .booking-image {
+        height: 400px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .test-drive-title {
+        font-size: 32px;
+      }
+
+      .test-drive-subtitle {
+        font-size: 14px;
+      }
+
+      .section-title {
+        font-size: 28px;
+      }
+
+      .car-360-slider {
+        width: 150px;
+      }
+
+      .date-selector {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .step-buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .step-btn {
+        width: 100%;
+      }
+    }
+
+
+    .testimonial-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .testimonial-btn {
+      background-color: #ffffff;
+      border: 2px solid #ccc;
+      color: #333;
+      padding: 0.5rem 1rem;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .testimonial-btn:hover {
+      background-color: #f0f0f0;
+      border-color: #999;
+      color: #000;
+    }
+
+    .testimonial-btn i {
+      font-size: 1.2rem;
+    }
+
+  </style>
+</head>
+<body>
+<!--&lt;!&ndash; Loader &ndash;&gt;-->
+<!--<div class="loader">-->
+<!--  <div class="loader-content">-->
+<!--    <div class="loader-spinner"></div>-->
+<!--    <h2>AUTOLUX</h2>-->
+<!--    <p>Loading your test drive experience...</p>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!-- Header -->
+<header class="header">
+  <div class="logo">AUTOLUX</div>
+  <nav class="nav-links">
+    <a href="homePage.html">HOME</a>
+    <a href="aboutPage.html">ABOUT</a>
+    <a href="newCarsPage.html" class="active">NEW CAR</a>
+    <a href="testDrivePage.html">TEST DRIVE</a>
+  </nav>
+  <div>
+    <button class="search-btn"><i class="fas fa-search"></i></button>
+    <button class="menu-btn" id="menuToggle"><i class="fas fa-bars"></i></button>
+  </div>
+</header>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu">
+  <nav class="mobile-nav">
+    <a href="homePage.html">HOME</a>
+    <a href="aboutPage.html">ABOUT</a>
+    <a href="newCarsPage.html" class="active">NEW CAR</a>
+    <a href="#">TEST DRIVE</a>
+  </nav>
+</div>
+
+<!-- Test Drive Hero Section -->
+<section class="test-drive-hero">
+  <video class="test-drive-video" autoplay muted loop>
+    <source src="videos/Untitled design.mp4" type="video/mp4">
+  </video>
+  <div class="test-drive-overlay"></div>
+  <div class="test-drive-content">
+    <h3 class="test-drive-subtitle">Experience the Drive</h3>
+    <h1 class="test-drive-title">Book Your Test Drive</h1>
+    <p class="test-drive-description">Feel the power and comfort of our luxury vehicles. Choose your favorite model and schedule a test drive at your convenience.</p>
+    <a href="#book-now" class="hero-btn">Book Now <i class="fas fa-arrow-right"></i></a>
+  </div>
+</section>
+
+<!-- Car Showcase Section -->
+<section class="car-showcase">
+  <div class="showcase-container">
+    <h2 class="section-title">Our Premium Models</h2>
+    <p class="section-subtitle">Explore our extensive collection of luxury vehicles available for test drive. Each vehicle offers a unique driving experience that perfectly balances performance and comfort.</p>
+
+    <div class="showcase-grid">
+      <!-- Car 1 -->
+      <div class="car-preview" data-car="luxury-sedan">
+        <img src="img/newCar/R%20(20).jpeg" alt="Luxury Sedan" class="car-preview-image">
+        <div class="car-preview-overlay">
+          <h3 class="preview-title">Luxury Sedan</h3>
+          <p class="preview-subtitle">Executive Class</p>
+          <div class="preview-specs">
+            <span>380 HP</span>
+            <span>4.5s 0-60mph</span>
+            <span>AWD</span>
+          </div>
+          <a href="#" class="preview-btn">View Details</a>
+        </div>
+      </div>
+
+      <!-- Car 2 -->
+      <div class="car-preview" data-car="sports-coupe">
+        <img src="img/newCar/Lamborghini_one-offs.webp" alt="Sports Coupe" class="car-preview-image">
+        <div class="car-preview-overlay">
+          <h3 class="preview-title">Sports Coupe</h3>
+          <p class="preview-subtitle">Performance Series</p>
+          <div class="preview-specs">
+            <span>450 HP</span>
+            <span>3.8s 0-60mph</span>
+            <span>RWD</span>
+          </div>
+          <a href="#" class="preview-btn">View Details</a>
+        </div>
+      </div>
+
+      <!-- Car 3 -->
+      <div class="car-preview" data-car="luxury-suv">
+        <img src="img/newCar/wp6535769.webp" alt="Luxury SUV" class="car-preview-image">
+        <div class="car-preview-overlay">
+          <h3 class="preview-title">Luxury SUV</h3>
+          <p class="preview-subtitle">Premium Collection</p>
+          <div class="preview-specs">
+            <span>400 HP</span>
+            <span>5.2s 0-60mph</span>
+            <span>AWD</span>
+          </div>
+          <a href="#" class="preview-btn">View Details</a>
+        </div>
+      </div>
+
+      <!-- Car 4 -->
+      <div class="car-preview" data-car="electric-sedan">
+        <img src="img/newCar/bespoke-lamborghini-revuelto-unveiled-during-2024-lamborghini-arena_100926106.jpg" alt="Electric Sedan" class="car-preview-image">
+        <div class="car-preview-overlay">
+          <h3 class="preview-title">Electric Sedan</h3>
+          <p class="preview-subtitle">Future Series</p>
+          <div class="preview-specs">
+            <span>350 HP</span>
+            <span>4.0s 0-60mph</span>
+            <span>400mi Range</span>
+          </div>
+          <a href="#" class="preview-btn">View Details</a>
+        </div>
+      </div>
+
+      <!-- Car 5 -->
+      <div class="car-preview" data-car="convertible">
+        <img src="img/newCar/R%20(5).png" alt="Convertible" class="car-preview-image">
+        <div class="car-preview-overlay">
+          <h3 class="preview-title">Convertible</h3>
+          <p class="preview-subtitle">Summer Collection</p>
+          <div class="preview-specs">
+            <span>400 HP</span>
+            <span>4.2s 0-60mph</span>
+            <span>400 HP</span>
+            <span>4.2s 0-60mph</span>
+            <span>RWD</span>
+          </div>
+          <a href="#" class="preview-btn">View Details</a>
+        </div>
+      </div>
+
+      <!-- Car 6 -->
+      <div class="car-preview" data-car="luxury-suv">
+        <img src="img/newCar/53201610163_670b5a346d_b.jpg" alt="Luxury SUV" class="car-preview-image">
+        <div class="car-preview-overlay">
+          <h3 class="preview-title">Luxury SUV</h3>
+          <p class="preview-subtitle">Premium Range</p>
+          <div class="preview-specs">
+            <span>450 HP</span>
+            <span>5.0s 0-60mph</span>
+            <span>AWD</span>
+          </div>
+          <a href="#" class="preview-btn">View Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 360 View Section -->
+<section class="view-360-section">
+  <div class="view-360-container">
+    <div class="view-360-content">
+      <h2 class="section-title">Interactive 360° Experience</h2>
+      <p class="section-description">Explore every angle of our premium vehicles with our interactive 360° view. Select different colors and get a complete feel of the car before scheduling your test drive.</p>
+      <div class="car-color-options">
+        <div class="color-option color-red active" data-color="red"></div>
+        <div class="color-option color-blue" data-color="blue"></div>
+        <div class="color-option color-black" data-color="black"></div>
+        <div class="color-option color-white" data-color="white"></div>
+        <div class="color-option color-silver" data-color="silver"></div>
+      </div>
+    </div>
+    <div class="view-360-display">
+      <div class="car-360-container">
+        <img src="img/newCar/R (5).png" alt="Car 360 View" class="car-360-image">
+        <div class="car-360-controls">
+          <button class="control-button" id="rotate-left"><i class="fas fa-arrow-left"></i></button>
+          <div class="car-360-slider">
+            <div class="slider-handle"></div>
+          </div>
+          <button class="control-button" id="rotate-right"><i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+  <div class="features-container">
+    <h2 class="section-title">Discover Premium Features</h2>
+    <p class="section-subtitle">Experience cutting-edge technology and luxurious comfort in every model. Our vehicles are designed with innovation and elegance in mind.</p>
+
+    <div class="features-tabs">
+      <button class="feature-tab active" data-tab="performance">Performance</button>
+      <button class="feature-tab" data-tab="comfort">Comfort & Luxury</button>
+      <button class="feature-tab" data-tab="technology">Technology</button>
+      <button class="feature-tab" data-tab="safety">Safety</button>
+    </div>
+
+    <div class="features-content">
+      <div class="feature-image">
+        <img src="img/newCar/lightning-lap-2016-the-years-hottest-performance-cars-at-vir-feature-car-and-driver-photo-670701-s-original.jpg" alt="Performance Features" id="feature-img">
+      </div>
+      <div class="feature-details">
+        <div class="feature-content-tab active" id="performance-content">
+          <h3 class="feature-title">Exceptional Performance</h3>
+          <p class="feature-description">Experience exhilarating acceleration and precision handling with our powerful engines and advanced drivetrain technology.</p>
+          <ul class="feature-list">
+            <li class="feature-item">
+              <div class="feature-icon"><i class="fas fa-tachometer-alt"></i></div>
+              <div class="feature-text">
+                <h4>Powerful Engines</h4>
+                <p>Our high-performance engines deliver up to 450 horsepower, providing thrilling acceleration and responsive power delivery.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-icon"><i class="fas fa-cogs"></i></div>
+              <div class="feature-text">
+                <h4>Advanced Transmission</h4>
+                <p>8-speed dual-clutch transmission offers lightning-fast gear changes for seamless power delivery and improved fuel efficiency.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-icon"><i class="fas fa-car"></i></div>
+              <div class="feature-text">
+                <h4>Adaptive Suspension</h4>
+                <p>Electronically controlled suspension system automatically adjusts to road conditions, providing the perfect balance between comfort and handling.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="feature-content-tab" id="comfort-content" style="display: none;">
+          <h3 class="feature-title">Supreme Comfort & Luxury</h3>
+          <p class="feature-description">Immerse yourself in premium materials and thoughtfully designed interiors that provide unparalleled comfort on every journey.</p>
+          <ul class="feature-list">
+            <li class="feature-item">
+              <div class="feature-icon"><i class="fas fa-couch"></i></div>
+              <div class="feature-text">
+                <h4>Premium Leather Seats</h4>
+                <p>Hand-crafted Nappa leather seats with heating, ventilation, and massage functions provide the ultimate seating experience.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-icon"><i class="fas fa-music"></i></div>
+              <div class="feature-text">
+                <h4>Premium Sound System</h4>
+                <p>16-speaker surround sound system delivers concert-hall quality audio tuned specifically for the vehicle's acoustic environment.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-icon"><i class="fas fa-temperature-low"></i></div>
+              <div class="feature-text">
+                <h4>Four-Zone Climate Control</h4>
+                <p>Individual climate settings for each passenger ensure everyone travels in their perfect temperature environment.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="feature-content-tab" id="technology-content" style="display: none;">
+          <h3 class="feature-title">Cutting-Edge Technology</h3>
+          <p class="feature-description">Stay connected and entertained with our state-of-the-art infotainment system and advanced driver assistance technologies.</p>
+          <ul class="feature-list">
+            <li class="feature-item">
+              <div class="feature-icon"><i class="fas fa-tablet-alt"></i></div>
+              <div class="feature-text">
+                <h4>12.3" Touchscreen Display</h4>
+                <p>Ultra-responsive touchscreen with intuitive interface provides access to navigation, entertainment, and vehicle settings.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-icon"><i class="fas fa-wifi"></i></div>
+              <div class="feature-text">
+                <h4>Connectivity Suite</h4>
+                <p>Seamless integration with your smartphone, including wireless charging, Apple CarPlay, and Android Auto.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-icon"><i class="fas fa-map-marked-alt"></i></div>
+              <div class="feature-text">
+                <h4>Augmented Reality Navigation</h4>
+                <p>Overlays directional graphics onto a live camera view of the road ahead for intuitive guidance to your destination.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="feature-content-tab" id="safety-content" style="display: none;">
+          <h3 class="feature-title">Advanced Safety Systems</h3>
+          <p class="feature-description">Drive with confidence knowing that our comprehensive safety systems are working to protect you and your passengers.</p>
+          <ul class="feature-list">
+            <li class="feature-item">
+              <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+              <div class="feature-text">
+                <h4>360° Surround View</h4>
+                <p>Multiple cameras provide a bird's-eye view of your vehicle, making parking and maneuvering in tight spaces easy and safe.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-icon"><i class="fas fa-car-crash"></i></div>
+              <div class="feature-text">
+                <h4>Collision Avoidance</h4>
+                <p>Advanced sensors detect potential collisions and can automatically apply brakes to prevent or mitigate accidents.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <div class="feature-icon"><i class="fas fa-road"></i></div>
+              <div class="feature-text">
+                <h4>Lane Keeping Assist</h4>
+                <p>Monitors road markings and gently steers the vehicle back into lane if unintentional drift is detected.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Test Drive Booking Section -->
+<section class="test-drive-booking" id="book-now">
+  <div class="booking-container">
+    <div class="booking-image">
+      <img src="img/newCar/test-drive-1%20(2).jpg" alt="Test Drive Experience">
+    </div>
+    <div class="booking-form-wrapper">
+      <h2 class="section-title">Schedule Your Test Drive</h2>
+      <p class="section-subtitle">Experience the luxury and performance of our vehicles firsthand. Book your test drive today.</p>
+
+      <div class="booking-steps">
+        <div class="steps-track" id="steps-track">
+          <div class="step active" data-step="1">
+            <div class="step-circle">1</div>
+            <div class="step-label">Choose Vehicle</div>
+          </div>
+          <div class="step" data-step="2">
+            <div class="step-circle">2</div>
+            <div class="step-label">Date & Time</div>
+          </div>
+          <div class="step" data-step="3">
+            <div class="step-circle">3</div>
+            <div class="step-label">Your Details</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="booking-step-content active" id="step-1-content">
+        <h3 class="step-title">Select Your Preferred Vehicle</h3>
+        <div class="car-selection">
+          <div class="car-option" data-car="luxury-sedan">
+            <img src="img/newCar/R%20(20).jpeg" alt="Luxury Sedan">
+            <h4>Luxury Sedan</h4>
+            <p>Executive Class</p>
+          </div>
+          <div class="car-option" data-car="electric-sedan">
+            <img src="img/newCar/bespoke-lamborghini-revuelto-unveiled-during-2024-lamborghini-arena_100926106.jpg" alt="Electric Sedan">
+            <h4>Electric Sedan</h4>
+            <p>Future Series</p>
+          </div>
+          <div class="car-option" data-car="convertible">
+            <img src="img/newCar/wp6535769.webp" alt="Convertible">
+            <h4>Convertible</h4>
+            <p>Summer Collection</p>
+          </div>
+          <div class="car-option" data-car="luxury-suv">
+            <img src="img/newCar/53201610163_670b5a346d_b.jpg" alt="Luxury SUV">
+            <h4>Luxury SUV</h4>
+            <p>Premium Range</p>
+          </div>
+        </div>
+        <div class="step-buttons">
+          <button class="step-btn next-btn" id="step1-next">Continue <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div class="booking-step-content" id="step-2-content">
+        <h3 class="step-title">Select Date & Time</h3>
+        <div class="date-time-selection">
+          <h4>Choose a Date</h4>
+          <div class="date-selector">
+            <div class="date-day">
+              <div class="date-number">10</div>
+              <div class="date-weekday">Mon</div>
+            </div>
+            <div class="date-day">
+              <div class="date-number">11</div>
+              <div class="date-weekday">Tue</div>
+            </div>
+            <div class="date-day">
+              <div class="date-number">12</div>
+              <div class="date-weekday">Wed</div>
+            </div>
+            <div class="date-day">
+              <div class="date-number">13</div>
+              <div class="date-weekday">Thu</div>
+            </div>
+            <div class="date-day">
+              <div class="date-number">14</div>
+              <div class="date-weekday">Fri</div>
+            </div>
+            <div class="date-day disabled">
+              <div class="date-number">15</div>
+              <div class="date-weekday">Sat</div>
+            </div>
+            <div class="date-day disabled">
+              <div class="date-number">16</div>
+              <div class="date-weekday">Sun</div>
+            </div>
+          </div>
+
+          <h4>Choose a Time</h4>
+          <div class="time-selector">
+            <div class="time-option">10:00 AM</div>
+            <div class="time-option">11:00 AM</div>
+            <div class="time-option disabled">12:00 PM</div>
+            <div class="time-option">1:00 PM</div>
+            <div class="time-option">2:00 PM</div>
+            <div class="time-option">3:00 PM</div>
+            <div class="time-option">4:00 PM</div>
+            <div class="time-option">5:00 PM</div>
+          </div>
+        </div>
+        <div class="step-buttons">
+          <button class="step-btn prev-btn" id="step2-prev"><i class="fas fa-arrow-left"></i> Back</button>
+          <button class="step-btn next-btn" id="step2-next">Continue <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div class="booking-step-content" id="step-3-content">
+        <h3 class="step-title">Enter Your Details</h3>
+        <div class="personal-info-form">
+          <form id="booking-form">
+            <div class="form-group">
+              <label for="full-name">Full Name</label>
+              <input type="text" id="full-name" placeholder="John Doe" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" placeholder="john@example.com" required>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" placeholder="+1 (555) 123-4567" required>
+            </div>
+            <div class="form-group">
+              <label for="license">Driver's License Number</label>
+              <input type="text" id="license" placeholder="DL12345678" required>
+            </div>
+            <div class="form-check">
+              <input type="checkbox" id="terms" required>
+              <label for="terms">I agree to the terms and conditions</label>
+            </div>
+          </form>
+        </div>
+        <div class="step-buttons">
+          <button class="step-btn prev-btn" id="step3-prev"><i class="fas fa-arrow-left"></i> Back</button>
+          <button class="step-btn next-btn" id="step3-next">Confirm Booking <i class="fas fa-check"></i></button>
+        </div>
+      </div>
+
+      <div class="booking-step-content" id="confirmation-content">
+        <div class="confirmation-message">
+          <div class="confirmation-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h3 class="confirmation-title">Test Drive Booked Successfully!</h3>
+          <p class="confirmation-text">We're excited to have you experience one of our premium vehicles. A confirmation email has been sent to your inbox with all the details.</p>
+          <div class="booking-details">
+            <div class="detail-item">
+              <span class="detail-label">Vehicle:</span>
+              <span class="detail-value" id="conf-vehicle">Luxury Sedan</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Date:</span>
+              <span class="detail-value" id="conf-date">May 11, 2025</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Time:</span>
+              <span class="detail-value" id="conf-time">2:00 PM</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Location:</span>
+              <span class="detail-value">AUTOLUX Main Showroom</span>
+            </div>
+          </div>
+          <a href="#" class="hero-btn">Return to Home <i class="fas fa-home"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Customer Testimonials -->
+<section class="testimonials-section">
+  <div class="testimonials-container">
+    <h2 class="section-title">What Our Customers Say</h2>
+    <p class="section-subtitle">Hear from those who have experienced our exceptional service and premium vehicles.</p>
+
+    <div class="testimonials-slider">
+      <div class="testimonial-slide active">
+        <div class="testimonial-content">
+          <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
+          <p class="testimonial-text">The test drive experience at AUTOLUX exceeded all my expectations. The staff was knowledgeable, friendly, and made sure I fully understood all the features of the vehicle before I hit the road.</p>
+          <div class="testimonial-author">
+            <img src="img/about/llll(5).jpeg" alt="Customer" class="author-image">
+            <div class="author-info">
+              <h4>Michael Johnson</h4>
+              <p>Luxury Sedan Owner</p>
+              <div class="rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-slide">
+        <div class="testimonial-content">
+          <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
+          <p class="testimonial-text">I was unsure about which model would best suit my needs, but after testing multiple vehicles with AUTOLUX's patient guidance, I found my perfect match. The booking process was seamless and the follow-up service has been exceptional.</p>
+          <div class="testimonial-author">
+            <img src="img/about/OIP%20(5).jpeg" alt="Customer" class="author-image">
+            <div class="author-info">
+              <h4>Sarah Williams</h4>
+              <p>Electric Sedan Owner</p>
+              <div class="rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-slide">
+        <div class="testimonial-content">
+          <div class="testimonial-quote"><i class="fas fa-quote-left"></i></div>
+          <p class="testimonial-text">From the moment I booked my test drive online to driving off the lot with my new SUV, AUTOLUX provided an incredible experience. The attention to detail and premium service made all the difference.</p>
+          <div class="testimonial-author">
+            <img src="img/about/OIP%20(10).jpeg" alt="Customer" class="author-image">
+            <div class="author-info">
+              <h4>David Thompson</h4>
+              <p>Luxury SUV Owner</p>
+              <div class="rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-controls">
+      <button class="testimonial-btn prev"><i class="fas fa-chevron-left"></i></button>
+      <div class="testimonial-dots">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+      <button class="testimonial-btn next"><i class="fas fa-chevron-right"></i></button>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-column">
+      <h3>AUTOLUX</h3>
+      <p style="color: var(--gray-text); line-height: 1.6; margin-bottom: 20px;">Experience luxury and performance with AUTOLUX, your premium automotive dealership offering the finest selection of luxury vehicles.</p>
+      <div class="social-links">
+        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-column">
+      <h3>Quick Links</h3>
+      <div class="footer-links">
+        <a href="#">Home</a>
+        <a href="#">About Us</a>
+        <a href="#">New Cars</a>
+        <a href="#">Used Cars</a>
+        <a href="#">Financing</a>
+        <a href="#">Contact Us</a>
+      </div>
+    </div>
+
+    <div class="footer-column">
+      <h3>Our Services</h3>
+      <div class="footer-links">
+        <a href="#">Car Sales</a>
+        <a href="#">Financing Options</a>
+        <a href="#">Vehicle Trade-In</a>
+        <a href="#">Maintenance & Repair</a>
+        <a href="#">Premium Detailing</a>
+        <a href="#">Extended Warranty</a>
+      </div>
+    </div>
+
+    <div class="footer-column">
+      <h3>Contact Us</h3>
+      <div class="footer-contact">
+        <div class="contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>123 Luxury Lane, Beverly Hills, CA 90210</span>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-phone-alt"></i>
+          <span>+1 (800) 123-4567</span>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-envelope"></i>
+          <span>info@autolux.com</span>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-clock"></i>
+          <span>Mon-Sat: 9:00 AM - 8:00 PM</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="copyright">© 2025 AUTOLUX. All Rights Reserved.</div>
+    <div class="footer-bottom-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Cookie Policy</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Back to Top Button -->
+<a href="#" class="back-to-top"><i class="fas fa-arrow-up"></i></a>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Mobile Menu Toggle
+    initializeMobileMenu();
+
+    // Test Drive Booking Steps
+    initializeBookingSteps();
+
+    // Feature Tabs
+    initializeFeatureTabs();
+
+    // Testimonial Slider
+    initializeTestimonialSlider();
+
+    // Car Showcase Hover Effects
+    initializeCarShowcase();
+
+    // 360 View Controls
+    initialize360View();
+
+    // Form Validation
+    initializeFormValidation();
+  });
+
+  // Mobile Menu Toggle
+  function initializeMobileMenu() {
+    const menuBtn = document.querySelector('.menu-btn');
+    const mobileMenu = document.querySelector('.mobile-menu');
+
+    if (menuBtn && mobileMenu) {
+      menuBtn.addEventListener('click', function() {
+        mobileMenu.classList.toggle('active');
+        document.body.classList.toggle('menu-open');
+      });
+    }
+  }
+
+  // Test Drive Booking Steps
+  function initializeBookingSteps() {
+    const stepsTrack = document.getElementById('steps-track');
+    const stepContents = document.querySelectorAll('.booking-step-content');
+
+    // Next buttons
+    const step1Next = document.getElementById('step1-next');
+    const step2Next = document.getElementById('step2-next');
+    const step3Next = document.getElementById('step3-next');
+
+    // Previous buttons
+    const step2Prev = document.getElementById('step2-prev');
+    const step3Prev = document.getElementById('step3-prev');
+
+    // Car selection
+    const carOptions = document.querySelectorAll('.car-option');
+    let selectedCar = '';
+
+    // Date selection
+    const dateDays = document.querySelectorAll('.date-day:not(.disabled)');
+    let selectedDate = '';
+
+    // Time selection
+    const timeOptions = document.querySelectorAll('.time-option:not(.disabled)');
+    let selectedTime = '';
+
+    // Initialize car selection
+    if (carOptions) {
+      carOptions.forEach(car => {
+        car.addEventListener('click', function() {
+          carOptions.forEach(c => c.classList.remove('selected'));
+          this.classList.add('selected');
+          selectedCar = this.getAttribute('data-car');
+        });
+      });
+    }
+
+    // Initialize date selection
+    if (dateDays) {
+      dateDays.forEach(day => {
+        day.addEventListener('click', function() {
+          dateDays.forEach(d => d.classList.remove('selected'));
+          this.classList.add('selected');
+          selectedDate = this.querySelector('.date-number').textContent + ' May 2025';
+        });
+      });
+    }
+
+    // Initialize time selection
+    if (timeOptions) {
+      timeOptions.forEach(time => {
+        time.addEventListener('click', function() {
+          timeOptions.forEach(t => t.classList.remove('selected'));
+          this.classList.add('selected');
+          selectedTime = this.textContent;
+        });
+      });
+    }
+
+    // Step 1 to Step 2
+    if (step1Next) {
+      step1Next.addEventListener('click', function() {
+        if (!selectedCar) {
+          showError('Please select a vehicle to continue');
+          return;
+        }
+
+        goToStep(2);
+      });
+    }
+
+    // Step 2 to Step 3
+    if (step2Next) {
+      step2Next.addEventListener('click', function() {
+        if (!selectedDate) {
+          showError('Please select a date to continue');
+          return;
+        }
+
+        if (!selectedTime) {
+          showError('Please select a time to continue');
+          return;
+        }
+
+        goToStep(3);
+      });
+    }
+
+    // Step 3 to Confirmation
+    if (step3Next) {
+      step3Next.addEventListener('click', function() {
+        const form = document.getElementById('booking-form');
+
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        // Display booking details in confirmation screen
+        document.getElementById('conf-vehicle').textContent = getCarName(selectedCar);
+        document.getElementById('conf-date').textContent = selectedDate;
+        document.getElementById('conf-time').textContent = selectedTime;
+
+        // Hide steps track
+        if (stepsTrack) {
+          stepsTrack.style.display = 'none';
+        }
+
+        // Show confirmation content
+        stepContents.forEach(content => content.classList.remove('active'));
+        document.getElementById('confirmation-content').classList.add('active');
+      });
+    }
+
+    // Previous step buttons
+    if (step2Prev) {
+      step2Prev.addEventListener('click', function() {
+        goToStep(1);
+      });
+    }
+
+    if (step3Prev) {
+      step3Prev.addEventListener('click', function() {
+        goToStep(2);
+      });
+    }
+
+    // Helper function to go to a specific step
+    function goToStep(stepNumber) {
+      // Update steps track
+      if (stepsTrack) {
+        const steps = stepsTrack.querySelectorAll('.step');
+        steps.forEach(step => {
+          const stepNum = parseInt(step.getAttribute('data-step'));
+          if (stepNum === stepNumber) {
+            step.classList.add('active');
+          } else if (stepNum < stepNumber) {
+            step.classList.add('completed');
+            step.classList.remove('active');
+          } else {
+            step.classList.remove('active', 'completed');
+          }
+        });
+      }
+
+      // Show corresponding content
+      stepContents.forEach(content => content.classList.remove('active'));
+      document.getElementById(`step-${stepNumber}-content`).classList.add('active');
+    }
+
+    // Helper function to get car name from data attribute
+    function getCarName(dataCarValue) {
+      const carNames = {
+        'luxury-sedan': 'Luxury Sedan',
+        'sports-coupe': 'Sports Coupe',
+        'luxury-suv': 'Luxury SUV',
+        'electric-sedan': 'Electric Sedan',
+        'convertible': 'Convertible'
+      };
+
+      return carNames[dataCarValue] || dataCarValue;
+    }
+
+    // Helper function to show error message
+    function showError(message) {
+      // Create error message element if it doesn't exist
+      let errorElement = document.querySelector('.booking-error');
+      if (!errorElement) {
+        errorElement = document.createElement('div');
+        errorElement.className = 'booking-error';
+        document.querySelector('.booking-steps').after(errorElement);
+      }
+
+      // Show error message
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+
+      // Hide error after 3 seconds
+      setTimeout(() => {
+        errorElement.style.display = 'none';
+      }, 3000);
+    }
+  }
+
+  // Feature Tabs
+  function initializeFeatureTabs() {
+    const featureTabs = document.querySelectorAll('.feature-tab');
+    const featureContents = document.querySelectorAll('.feature-content-tab');
+    const featureImage = document.getElementById('feature-img');
+
+    if (featureTabs && featureContents) {
+      featureTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          const tabName = this.getAttribute('data-tab');
+
+          // Update active tab
+          featureTabs.forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+
+          // Show corresponding content
+          featureContents.forEach(content => content.style.display = 'none');
+          document.getElementById(`${tabName}-content`).style.display = 'block';
+
+          // Update image (in a real scenario, you'd have different images per tab)
+          if (featureImage) {
+            // This is a placeholder - in production you'd change the image source
+            featureImage.alt = `${tabName.charAt(0).toUpperCase() + tabName.slice(1)} Features`;
+          }
+        });
+      });
+    }
+  }
+
+  // Testimonial Slider
+  function initializeTestimonialSlider() {
+    const slides = document.querySelectorAll('.testimonial-slide');
+    const dots = document.querySelectorAll('.testimonial-dots .dot');
+    const prevBtn = document.querySelector('.testimonial-btn.prev');
+    const nextBtn = document.querySelector('.testimonial-btn.next');
+
+    let currentSlide = 0;
+
+    function showSlide(index) {
+      // Validate index
+      if (index < 0) {
+        index = slides.length - 1;
+      } else if (index >= slides.length) {
+        index = 0;
+      }
+
+      // Update current slide
+      currentSlide = index;
+
+      // Hide all slides
+      slides.forEach(slide => slide.classList.remove('active'));
+      dots.forEach(dot => dot.classList.remove('active'));
+
+      // Show current slide
+      slides[currentSlide].classList.add('active');
+      dots[currentSlide].classList.add('active');
+    }
+
+    // Previous slide button
+    if (prevBtn) {
+      prevBtn.addEventListener('click', function() {
+        showSlide(currentSlide - 1);
+      });
+    }
+
+    // Next slide button
+    if (nextBtn) {
+      nextBtn.addEventListener('click', function() {
+        showSlide(currentSlide + 1);
+      });
+    }
+
+    // Dot navigation
+    if (dots) {
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', function() {
+          showSlide(index);
+        });
+      });
+    }
+
+    // Auto-rotate slides every 5 seconds
+    setInterval(() => {
+      showSlide(currentSlide + 1);
+    }, 5000);
+  }
+
+  // Car Showcase Hover Effects
+  function initializeCarShowcase() {
+    const carPreviews = document.querySelectorAll('.car-preview');
+
+    if (carPreviews) {
+      carPreviews.forEach(preview => {
+        preview.addEventListener('mouseenter', function() {
+          this.classList.add('hover');
+        });
+
+        preview.addEventListener('mouseleave', function() {
+          this.classList.remove('hover');
+        });
+
+        // Make the View Details button clickable
+        const viewDetailsBtn = preview.querySelector('.preview-btn');
+        if (viewDetailsBtn) {
+          viewDetailsBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const carType = preview.getAttribute('data-car');
+
+            // Smooth scroll to booking section
+            document.getElementById('book-now').scrollIntoView({ behavior: 'smooth' });
+
+            // Select the car in the booking form (if visible)
+            const carOptions = document.querySelectorAll('.car-option');
+            carOptions.forEach(car => {
+              if (car.getAttribute('data-car') === carType) {
+                carOptions.forEach(c => c.classList.remove('selected'));
+                car.classList.add('selected');
+              }
+            });
+          });
+        }
+      });
+    }
+  }
+
+  // 360 View Controls
+  function initialize360View() {
+    const colorOptions = document.querySelectorAll('.color-option');
+    const rotateLeft = document.getElementById('rotate-left');
+    const rotateRight = document.getElementById('rotate-right');
+    const sliderHandle = document.querySelector('.slider-handle');
+    const car360Image = document.querySelector('.car-360-image');
+
+    // Set initial rotation angle
+    let currentAngle = 0;
+    const totalAngles = 36; // 36 images for full 360 degrees (one image every 10 degrees)
+
+    // Color selection
+    if (colorOptions) {
+      colorOptions.forEach(option => {
+        option.addEventListener('click', function() {
+          const color = this.getAttribute('data-color');
+
+          // Update active color
+          colorOptions.forEach(o => o.classList.remove('active'));
+          this.classList.add('active');
+
+          // Update car image (in a real scenario, you'd have different images per color)
+          // This is just a placeholder - in production you'd change the image source based on color
+
+          // Reset rotation to front view
+          currentAngle = 0;
+          updateCarView();
+        });
+      });
+    }
+
+    // Rotate left button
+    if (rotateLeft) {
+      rotateLeft.addEventListener('click', function() {
+        currentAngle = (currentAngle - 1 + totalAngles) % totalAngles;
+        updateCarView();
+      });
+    }
+
+    // Rotate right button
+    if (rotateRight) {
+      rotateRight.addEventListener('click', function() {
+        currentAngle = (currentAngle + 1) % totalAngles;
+        updateCarView();
+      });
+    }
+
+    // Slider functionality
+    if (sliderHandle) {
+      let isDragging = false;
+      const slider = sliderHandle.parentElement;
+
+      sliderHandle.addEventListener('mousedown', startDrag);
+      slider.addEventListener('mousedown', jumpToPosition);
+      document.addEventListener('mousemove', drag);
+      document.addEventListener('mouseup', endDrag);
+
+      // Touch events for mobile
+      sliderHandle.addEventListener('touchstart', startDrag);
+      slider.addEventListener('touchstart', jumpToPosition);
+      document.addEventListener('touchmove', drag);
+      document.addEventListener('touchend', endDrag);
+
+      function startDrag(e) {
+        e.preventDefault();
+        isDragging = true;
+      }
+
+      function jumpToPosition(e) {
+        if (e.target === sliderHandle) return;
+
+        const rect = slider.getBoundingClientRect();
+        const x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+        const position = (x - rect.left) / rect.width;
+
+        updateSliderPosition(position);
+      }
+
+      function drag(e) {
+        if (!isDragging) return;
+
+        const rect = slider.getBoundingClientRect();
+        const x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+        const position = Math.max(0, Math.min(1, (x - rect.left) / rect.width));
+
+        updateSliderPosition(position);
+      }
+
+      function endDrag() {
+        isDragging = false;
+      }
+
+      function updateSliderPosition(position) {
+        // Update slider handle position
+        sliderHandle.style.left = `${position * 100}%`;
+
+        // Update car rotation based on slider position
+        currentAngle = Math.round(position * (totalAngles - 1));
+        updateCarView();
+      }
+    }
+
+    // Update car view based on current angle and color
+    function updateCarView() {
+      // In a real 360 view implementation, you would have 36 images (one for each 10 degrees)
+      // and you would update the src attribute based on the current angle
+      // This is just a placeholder - in production you'd change the image source based on angle
+      if (car360Image) {
+        // Rotate image using CSS transform as a visual placeholder for the 360 view
+        car360Image.style.transform = `rotateY(${currentAngle * 10}deg)`;
+
+        // Update slider position to match current angle
+        if (sliderHandle) {
+          sliderHandle.style.left = `${(currentAngle / (totalAngles - 1)) * 100}%`;
+        }
+      }
+    }
+  }
+
+  // Form Validation
+  function initializeFormValidation() {
+    const bookingForm = document.getElementById('booking-form');
+
+    if (bookingForm) {
+      const fullNameInput = document.getElementById('full-name');
+      const emailInput = document.getElementById('email');
+      const phoneInput = document.getElementById('phone');
+      const licenseInput = document.getElementById('license');
+      const termsCheckbox = document.getElementById('terms');
+
+      // Simple validation patterns
+      const patterns = {
+        email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        phone: /^[\d\s\+\-\(\)]{10,20}$/,
+        license: /^[A-Z0-9]{4,12}$/i
+      };
+
+      // Add input event listeners for real-time validation
+      if (emailInput) {
+        emailInput.addEventListener('input', function() {
+          validateInput(this, patterns.email);
+        });
+      }
+
+      if (phoneInput) {
+        phoneInput.addEventListener('input', function() {
+          validateInput(this, patterns.phone);
+        });
+      }
+
+      if (licenseInput) {
+        licenseInput.addEventListener('input', function() {
+          validateInput(this, patterns.license);
+        });
+      }
+
+      // Validate input against pattern
+      function validateInput(input, pattern) {
+        if (input.value.trim() === '') {
+          setInputStatus(input, 'default');
+        } else if (pattern.test(input.value)) {
+          setInputStatus(input, 'valid');
+        } else {
+          setInputStatus(input, 'invalid');
+        }
+      }
+
+      // Set input status (valid/invalid)
+      function setInputStatus(input, status) {
+        input.classList.remove('valid', 'invalid');
+        if (status !== 'default') {
+          input.classList.add(status);
+        }
+      }
+    }
+  }
+
+  // Add a loader animation that runs when the page first loads
+  function showLoader() {
+    // Check if loader exists
+    const loader = document.querySelector('.loader');
+    if (loader) {
+      // Show loader
+      loader.style.display = 'flex';
+
+      // Hide loader after page is fully loaded
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          loader.style.opacity = '0';
+          setTimeout(function() {
+            loader.style.display = 'none';
+          }, 500);
+        }, 1500);
+      });
+    }
+  }
+
+  // Uncomment this if you decide to use the loader in the HTML
+  // showLoader();
+
+  // Smooth scroll for all anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+
+      // Skip if href is just "#"
+      if (href === '#') return;
+
+      e.preventDefault();
+
+      const target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+
+        // Close mobile menu if open
+        const mobileMenu = document.querySelector('.mobile-menu');
+        if (mobileMenu && mobileMenu.classList.contains('active')) {
+          mobileMenu.classList.remove('active');
+          document.body.classList.remove('menu-open');
+        }
+      }
+    });
+  });
+
+  // Add scroll-based animations
+  function initializeScrollAnimations() {
+    const animatedElements = document.querySelectorAll('.section-title, .car-preview, .feature-item, .car-option');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.2
+    });
+
+    animatedElements.forEach(element => {
+      observer.observe(element);
+    });
+  }
+
+  // Initialize scroll animations if IntersectionObserver is supported
+  if ('IntersectionObserver' in window) {
+    initializeScrollAnimations();
+  }
+
+  // Add CSS class for styling based on scroll position
+  window.addEventListener('scroll', function() {
+    const header = document.querySelector('.header');
+    const scrollY = window.scrollY;
+
+    if (header) {
+      if (scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    }
+  });
+</script>
+</body>
+</html>

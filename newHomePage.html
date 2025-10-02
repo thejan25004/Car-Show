@@ -1,0 +1,1213 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--  <title>Premium Car Showcase</title>-->
+<!--  &lt;!&ndash; Font Awesome for Icons &ndash;&gt;-->
+<!--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">-->
+<!--  &lt;!&ndash; Tailwind CSS &ndash;&gt;-->
+<!--  <script src="https://cdn.tailwindcss.com"></script>-->
+<!--  <style>-->
+<!--    /* Custom CSS for Animations, Styling, and Themes */-->
+<!--    :root {-->
+<!--      &#45;&#45;bg-light: #f5f0e1;-->
+<!--      &#45;&#45;bg-dark: #1a1a1a;-->
+<!--      &#45;&#45;text-light: #333;-->
+<!--      &#45;&#45;text-dark: #e0e0e0;-->
+<!--      &#45;&#45;accent-color: #ff4500;-->
+<!--      &#45;&#45;header-bg-light: rgba(255, 255, 255, 0.9);-->
+<!--      &#45;&#45;header-bg-dark: rgba(0, 0, 0, 0.9);-->
+<!--      &#45;&#45;price-bg-light: rgba(0, 0, 0, 0.8);-->
+<!--      &#45;&#45;price-bg-dark: rgba(255, 255, 255, 0.1);-->
+<!--    }-->
+
+<!--    body {-->
+<!--      background-color: var(&#45;&#45;bg-light);-->
+<!--      color: var(&#45;&#45;text-light);-->
+<!--      overflow-x: hidden;-->
+<!--      transition: background-color 0.5s ease, color 0.5s ease;-->
+<!--    }-->
+
+<!--    body.dark {-->
+<!--      background-color: var(&#45;&#45;bg-dark);-->
+<!--      color: var(&#45;&#45;text-dark);-->
+<!--    }-->
+
+<!--    .header {-->
+<!--      background: var(&#45;&#45;header-bg-light);-->
+<!--      backdrop-filter: blur(10px);-->
+<!--      transition: background 0.5s ease;-->
+<!--    }-->
+
+<!--    body.dark .header {-->
+<!--      background: var(&#45;&#45;header-bg-dark);-->
+<!--    }-->
+
+<!--    .nav-links a:hover {-->
+<!--      color: var(&#45;&#45;accent-color);-->
+<!--      transition: color 0.3s ease;-->
+<!--    }-->
+
+<!--    .car-showcase {-->
+<!--      opacity: 0;-->
+<!--      transform: translateY(20px);-->
+<!--      animation: fadeIn 1s forwards;-->
+<!--    }-->
+
+<!--    @keyframes fadeIn {-->
+<!--      to {-->
+<!--        opacity: 1;-->
+<!--        transform: translateY(0);-->
+<!--      }-->
+<!--    }-->
+
+<!--    .car-image {-->
+<!--      transition: transform 0.5s ease;-->
+<!--      filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.3));-->
+<!--    }-->
+
+<!--    .car-image:hover {-->
+<!--      transform: scale(1.05);-->
+<!--    }-->
+
+<!--    .color-option {-->
+<!--      transition: all 0.3s ease;-->
+<!--    }-->
+
+<!--    .color-option:hover {-->
+<!--      transform: scale(1.2);-->
+<!--    }-->
+
+<!--    .color-option.active {-->
+<!--      border: 2px solid #fff;-->
+<!--      transform: scale(1.2);-->
+<!--    }-->
+
+<!--    .stat-item {-->
+<!--      opacity: 0;-->
+<!--      transform: translateY(20px);-->
+<!--      animation: popIn 0.5s forwards;-->
+<!--    }-->
+
+<!--    .stat-item:nth-child(1) { animation-delay: 0.2s; }-->
+<!--    .stat-item:nth-child(2) { animation-delay: 0.4s; }-->
+
+<!--    @keyframes popIn {-->
+<!--      to {-->
+<!--        opacity: 1;-->
+<!--        transform: translateY(0);-->
+<!--      }-->
+<!--    }-->
+
+<!--    .arrows button {-->
+<!--      transition: all 0.3s ease;-->
+<!--    }-->
+
+<!--    .arrows button:hover {-->
+<!--      background: rgba(255, 255, 255, 0.3);-->
+<!--      transform: scale(1.1);-->
+<!--    }-->
+
+<!--    .price-section {-->
+<!--      background: var(&#45;&#45;price-bg-light);-->
+<!--      backdrop-filter: blur(10px);-->
+<!--      transition: background 0.5s ease;-->
+<!--    }-->
+
+<!--    body.dark .price-section {-->
+<!--      background: var(&#45;&#45;price-bg-dark);-->
+<!--    }-->
+
+<!--    /* Theme Toggle Button */-->
+<!--    .theme-toggle {-->
+<!--      position: fixed;-->
+<!--      top: 20px;-->
+<!--      right: 20px;-->
+<!--      z-index: 20;-->
+<!--      background: none;-->
+<!--      border: none;-->
+<!--      cursor: pointer;-->
+<!--      padding: 10px;-->
+<!--      transition: transform 0.3s ease;-->
+<!--    }-->
+
+<!--    .theme-toggle:hover {-->
+<!--      transform: scale(1.1);-->
+<!--    }-->
+
+<!--    .theme-toggle i {-->
+<!--      font-size: 24px;-->
+<!--      color: var(&#45;&#45;text-light);-->
+<!--      transition: color 0.5s ease;-->
+<!--    }-->
+
+<!--    body.dark .theme-toggle i {-->
+<!--      color: var(&#45;&#45;text-dark);-->
+<!--    }-->
+
+<!--    /* Smooth transitions for text and background elements */-->
+<!--    .indicator, .car-subtitle, .car-description, .stat-label, .stat-value, .price-section div {-->
+<!--      transition: color 0.5s ease;-->
+<!--    }-->
+
+<!--    body.dark .indicator, body.dark .car-subtitle, body.dark .car-description, body.dark .stat-label {-->
+<!--      color: #a0a0a0;-->
+<!--    }-->
+
+<!--    body.dark .stat-value, body.dark .price-section div {-->
+<!--      color: #e0e0e0;-->
+<!--    }-->
+<!--  </style>-->
+<!--</head>-->
+<!--<body class="text-gray-900">-->
+<!--&lt;!&ndash; Theme Toggle Button &ndash;&gt;-->
+<!--<button class="theme-toggle" aria-label="Toggle theme">-->
+<!--  <i class="fas fa-moon"></i>-->
+<!--</button>-->
+
+<!--&lt;!&ndash; Header &ndash;&gt;-->
+<!--<header class="header fixed top-0 left-0 right-0 z-10 flex justify-between items-center p-4">-->
+<!--  <div class="flex items-center gap-2">-->
+<!--    <i class="fas fa-car text-xl"></i>-->
+<!--    <div class="text-xl font-bold uppercase">Cars</div>-->
+<!--  </div>-->
+<!--  <nav class="nav-links flex gap-6">-->
+<!--    <a href="#" class="text-sm uppercase font-medium">Home</a>-->
+<!--    <a href="#" class="text-sm uppercase font-medium">Services</a>-->
+<!--    <a href="#" class="text-sm uppercase font-medium">Pricing</a>-->
+<!--    <a href="#" class="text-sm uppercase font-medium">News</a>-->
+<!--  </nav>-->
+<!--  <button class="text-sm"><i class="fas fa-phone"></i> (801) 613-2084</button>-->
+<!--</header>-->
+
+<!--&lt;!&ndash; Main Content &ndash;&gt;-->
+<!--<div class="relative min-h-screen flex items-center justify-center pt-20">-->
+<!--  &lt;!&ndash; Left Sidebar &ndash;&gt;-->
+<!--  <div class="absolute left-8 top-1/2 transform -translate-y-1/2 flex flex-col gap-4">-->
+<!--    <div class="flex flex-col gap-2 text-gray-600">-->
+<!--      <button class="text-sm hover:text-orange-600"><i class="fas fa-paint-roller mr-2"></i> Colors</button>-->
+<!--      <button class="text-sm hover:text-orange-600"><i class="fas fa-cog mr-2"></i> Engine</button>-->
+<!--      <button class="text-sm hover:text-orange-600"><i class="fas fa-car mr-2"></i> Tires</button>-->
+<!--    </div>-->
+<!--    <div class="flex flex-col gap-3">-->
+<!--      <div class="color-option w-8 h-8 rounded-full cursor-pointer bg-gray-300 active" data-color="gray"></div>-->
+<!--      <div class="color-option w-8 h-8 rounded-full cursor-pointer bg-black" data-color="black"></div>-->
+<!--      <div class="color-option w-8 h-8 rounded-full cursor-pointer bg-red-600" data-color="red"></div>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash; Car Showcase &ndash;&gt;-->
+<!--  <div class="car-showcase flex flex-col items-center text-center">-->
+<!--    <div class="indicator absolute top-20 left-10 text-lg">01 <span>/ 03</span></div>-->
+<!--    <h2 class="car-subtitle text-lg uppercase tracking-wider mb-4">Get the Premium Collection</h2>-->
+<!--    <h1 class="text-5xl font-bold uppercase mb-4">Jaguar 3ICI</h1>-->
+<!--    <p class="car-description max-w-md mb-6">Imperdiet orci, vulputat eget pellentesque ut tristique. Suspendisse diam non id sapien massa, leo ac sed.</p>-->
+<!--    <div class="flex gap-8 mb-6">-->
+<!--      <div class="stat-item">-->
+<!--        <div class="stat-value text-2xl font-bold">8800+</div>-->
+<!--        <div class="stat-label text-sm uppercase">Interior</div>-->
+<!--      </div>-->
+<!--      <div class="stat-item">-->
+<!--        <div class="stat-value text-2xl font-bold">4.9</div>-->
+<!--        <div class="stat-label text-sm uppercase">Rating</div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    &lt;!&ndash; Car Image &ndash;&gt;-->
+<!--    <div class="relative">-->
+<!--      <img id="carImage" src="https://www.jaguarusa.com/images/jaguar-f-type-coupe-hero-2025.jpg" alt="Jaguar F-Type" class="car-image max-w-2xl">-->
+<!--      <div class="absolute top-1/2 right-0 transform translate-x-1/2 bg-orange-600 text-white p-4 rounded-l-lg">-->
+<!--        <div class="text-sm uppercase">Volutpat</div>-->
+<!--        <p class="text-xs">Suspendisse diam non id sapien massa leo ac sed.</p>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    &lt;!&ndash; Navigation Arrows &ndash;&gt;-->
+<!--    <div class="arrows absolute top-1/2 right-10 transform -translate-y-1/2 flex gap-4">-->
+<!--      <button id="prevBtn" class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"><i class="fas fa-chevron-left"></i></button>-->
+<!--      <button id="nextBtn" class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"><i class="fas fa-chevron-right"></i></button>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Price Section &ndash;&gt;-->
+<!--<div class="price-section flex justify-between items-center p-6">-->
+<!--  <div class="flex items-center gap-4">-->
+<!--    <div class="text-orange-600 bg-gray-800 p-2 rounded">-->
+<!--      <i class="fas fa-star"></i> Imperdiet Orci Enter Into for Turbo Adapting-->
+<!--    </div>-->
+<!--    <div class="text-2xl font-bold">Regular Price: <span class="text-orange-600">$4978</span></div>-->
+<!--  </div>-->
+<!--  <div class="flex items-center gap-4">-->
+<!--    <div class="text-2xl font-bold">Jaguar 3ICI</div>-->
+<!--    <div class="text-sm">Imperdiet orci, vulputat eget pellentesque ut tristique.</div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--  document.addEventListener('DOMContentLoaded', () => {-->
+<!--    // Car data with internet-sourced images-->
+<!--    const cars = [-->
+<!--      {-->
+<!--        name: 'Jaguar 3ICI',-->
+<!--        image: 'https://www.jaguarusa.com/images/jaguar-f-type-coupe-hero-2025.jpg',-->
+<!--        color: 'gray',-->
+<!--        interior: '8800+',-->
+<!--        rating: '4.9',-->
+<!--        price: '$4978',-->
+<!--        index: '01 / 03'-->
+<!--      },-->
+<!--      {-->
+<!--        name: 'Porsche 911 Turbo',-->
+<!--        image: 'https://files.porsche.com/filestore/image/multimedia/none/992-turbo-s-coupe-modelimage-sideshot/4d5c5e1a-5f5e-11ea-80c8-005056bb762b/porsche-modelimage-sideshot.png',-->
+<!--        color: 'black',-->
+<!--        interior: '9200+',-->
+<!--        rating: '4.8',-->
+<!--        price: '$5120',-->
+<!--        index: '02 / 03'-->
+<!--      },-->
+<!--      {-->
+<!--        name: 'Ferrari F8 Tributo',-->
+<!--        image: 'https://www.ferrari.com/is/image/Ferrari/f8-tributo-01?fmt=png-alpha&wid=1440',-->
+<!--        color: 'red',-->
+<!--        interior: '9500+',-->
+<!--        rating: '4.9',-->
+<!--        price: '$6250',-->
+<!--        index: '03 / 03'-->
+<!--      }-->
+<!--    ];-->
+
+<!--    let currentCarIndex = 0;-->
+
+<!--    // Elements-->
+<!--    const carImage = document.getElementById('carImage');-->
+<!--    const carTitle = document.querySelector('h1');-->
+<!--    const interiorStat = document.querySelector('.stat-item:nth-child(1) .text-2xl');-->
+<!--    const ratingStat = document.querySelector('.stat-item:nth-child(2) .text-2xl');-->
+<!--    const price = document.querySelector('.price-section .text-orange-600');-->
+<!--    const indicator = document.querySelector('.indicator');-->
+<!--    const carShowcase = document.querySelector('.car-showcase');-->
+<!--    const prevBtn = document.getElementById('prevBtn');-->
+<!--    const nextBtn = document.getElementById('nextBtn');-->
+<!--    const colorOptions = document.querySelectorAll('.color-option');-->
+<!--    const themeToggle = document.querySelector('.theme-toggle');-->
+<!--    const themeIcon = themeToggle.querySelector('i');-->
+
+<!--    // Check for saved theme preference-->
+<!--    if (localStorage.getItem('theme') === 'dark') {-->
+<!--      document.body.classList.add('dark');-->
+<!--      themeIcon.classList.replace('fa-moon', 'fa-sun');-->
+<!--    }-->
+
+<!--    // Theme toggle functionality-->
+<!--    themeToggle.addEventListener('click', () => {-->
+<!--      document.body.classList.toggle('dark');-->
+<!--      if (document.body.classList.contains('dark')) {-->
+<!--        themeIcon.classList.replace('fa-moon', 'fa-sun');-->
+<!--        localStorage.setItem('theme', 'dark');-->
+<!--      } else {-->
+<!--        themeIcon.classList.replace('fa-sun', 'fa-moon');-->
+<!--        localStorage.setItem('theme', 'light');-->
+<!--      }-->
+<!--    });-->
+
+<!--    // Function to update car info-->
+<!--    function updateCar(index) {-->
+<!--      const car = cars[index];-->
+<!--      carShowcase.style.opacity = '0';-->
+<!--      setTimeout(() => {-->
+<!--        carTitle.textContent = car.name;-->
+<!--        carImage.src = car.image;-->
+<!--        interiorStat.textContent = car.interior;-->
+<!--        ratingStat.textContent = car.rating;-->
+<!--        price.textContent = car.price;-->
+<!--        indicator.textContent = car.index;-->
+<!--        carShowcase.style.opacity = '1';-->
+
+<!--        // Update active color-->
+<!--        colorOptions.forEach(option => {-->
+<!--          option.classList.remove('active');-->
+<!--          if (option.dataset.color === car.color) {-->
+<!--            option.classList.add('active');-->
+<!--          }-->
+<!--        });-->
+<!--      }, 300);-->
+<!--    }-->
+
+<!--    // Navigation buttons-->
+<!--    prevBtn.addEventListener('click', () => {-->
+<!--      currentCarIndex = (currentCarIndex - 1 + cars.length) % cars.length;-->
+<!--      updateCar(currentCarIndex);-->
+<!--    });-->
+
+<!--    nextBtn.addEventListener('click', () => {-->
+<!--      currentCarIndex = (currentCarIndex + 1) % cars.length;-->
+<!--      updateCar(currentCarIndex);-->
+<!--    });-->
+
+<!--    // Color picker-->
+<!--    colorOptions.forEach(option => {-->
+<!--      option.addEventListener('click', () => {-->
+<!--        const color = option.dataset.color;-->
+<!--        const index = cars.findIndex(car => car.color === color);-->
+<!--        if (index !== -1) {-->
+<!--          currentCarIndex = index;-->
+<!--          updateCar(currentCarIndex);-->
+<!--        }-->
+<!--      });-->
+<!--    });-->
+<!--  });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premium Car Collection</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f0ebe5;
+      color: #111;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* Header Styles */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 20px;
+      text-transform: uppercase;
+    }
+
+    .logo-icon {
+      width: 30px;
+      height: 30px;
+      margin-right: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    nav {
+      flex: 1;
+      text-align: center;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    nav ul li {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      color: #444;
+    }
+
+    .contact {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .contact i {
+      margin-right: 8px;
+    }
+
+    /* Main Content */
+    .main {
+      display: flex;
+      height: calc(100vh - 70px);
+      position: relative;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 200px;
+      padding: 0;
+      border-right: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .menu-item {
+      padding: 20px 40px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .menu-item h3 {
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .menu-item h3::after {
+      content: '+';
+      font-size: 16px;
+    }
+
+    .menu-item.active {
+      background-color: rgba(0,0,0,0.02);
+    }
+
+    .menu-item.active h3 {
+      font-weight: 600;
+    }
+
+    .item-counter {
+      position: relative;
+      padding: 20px 40px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      color: #ff5c35;
+    }
+
+    .item-counter::before {
+      content: '';
+      height: 1px;
+      width: 20px;
+      background-color: #ff5c35;
+      margin-right: 10px;
+    }
+
+    .item-counter .total {
+      color: #999;
+      margin-left: 2px;
+    }
+
+    /* Content Area */
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .premium-headline {
+      text-align: center;
+      padding: 60px 0 40px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .premium-headline h1 {
+      font-size: 56px;
+      line-height: 1.1;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #111;
+      letter-spacing: -1px;
+    }
+
+    /* Car Display Area */
+    .car-display {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .circle-bg {
+      width: 320px;
+      height: 320px;
+      background-color: #ff5c35;
+      border-radius: 50%;
+      position: absolute;
+      z-index: 1;
+      transform: translateX(-60px);
+    }
+
+    .car-image-wrapper {
+      position: relative;
+      z-index: 2;
+      width: 600px;
+      height: 250px;
+    }
+
+    .car-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .speed-lines {
+      position: absolute;
+      right: 20%;
+      top: 40%;
+      z-index: 1;
+    }
+
+    .speed-line {
+      width: 40px;
+      height: 2px;
+      background-color: #ff5c35;
+      margin: 10px 0;
+      opacity: 0.7;
+    }
+
+    /* Navigation Arrows */
+    .navigation {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 15px;
+      z-index: 10;
+    }
+
+    .nav-arrow {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #111;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .nav-arrow:hover {
+      background-color: #111;
+      color: #fff;
+    }
+
+    /* Right Side Panel */
+    .right-panel {
+      width: 60px;
+      border-left: 1px solid rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+    }
+
+    .page-indicator {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .indicator-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #ddd;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .indicator-dot.active {
+      background-color: #ff5c35;
+      transform: scale(1.5);
+    }
+
+    .scroll-hint {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .scroll-hint i {
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(10px); }
+    }
+
+    /* Bottom Car Details */
+    .car-details {
+      background-color: #111;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+    }
+
+    .car-model {
+      font-size: 24px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .car-model span {
+      color: #ff5c35;
+    }
+
+    .car-price {
+      text-align: center;
+    }
+
+    .price-label {
+      display: block;
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 5px;
+    }
+
+    .price-value {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .car-metrics {
+      display: flex;
+      gap: 40px;
+    }
+
+    .metric {
+      text-align: center;
+    }
+
+    .metric-value {
+      font-size: 26px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .metric-label {
+      font-size: 12px;
+      color: #999;
+      text-transform: uppercase;
+    }
+
+    .rating-stars {
+      color: #ff5c35;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    /* Car details */
+    .car-info {
+      position: absolute;
+      left: 40px;
+      bottom: 120px;
+      z-index: 5;
+    }
+
+    .car-badge {
+      display: inline-block;
+      padding: 5px 10px;
+      background-color: #111;
+      color: white;
+      font-size: 12px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .car-description {
+      max-width: 300px;
+      font-size: 14px;
+      line-height: 1.4;
+      color: #555;
+    }
+
+    /* Animated elements */
+    .floating-point {
+      position: absolute;
+      top: 90px;
+      right: 120px;
+      z-index: 5;
+    }
+
+    .point-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #ff5c35;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulse 2s infinite;
+    }
+
+    .point-circle::before,
+    .point-circle::after {
+      content: '';
+      position: absolute;
+      width: 15px;
+      height: 2px;
+      background-color: white;
+    }
+
+    .point-circle::before {
+      transform: rotate(90deg);
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .premium-headline h1 {
+        font-size: 48px;
+      }
+
+      .car-image-wrapper {
+        width: 500px;
+      }
+
+      .circle-bg {
+        width: 280px;
+        height: 280px;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .main {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .sidebar {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        border-right: none;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+      }
+
+      .menu-item {
+        flex: 1;
+        padding: 15px 20px;
+        border-right: 1px solid rgba(0,0,0,0.05);
+        border-bottom: none;
+      }
+
+      .item-counter {
+        padding: 15px 20px;
+      }
+
+      .right-panel {
+        display: none;
+      }
+
+      .premium-headline {
+        padding: 30px 0;
+      }
+
+      .premium-headline h1 {
+        font-size: 36px;
+      }
+
+      .car-details {
+        flex-direction: column;
+        gap: 20px;
+        align-items: flex-start;
+      }
+
+      .car-metrics {
+        width: 100%;
+        justify-content: space-around;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+      }
+
+      nav ul {
+        gap: 20px;
+      }
+
+      .car-image-wrapper {
+        width: 100%;
+        padding: 0 20px;
+      }
+
+      .circle-bg {
+        width: 220px;
+        height: 220px;
+      }
+
+      .car-info {
+        left: 20px;
+        bottom: 100px;
+      }
+
+      .navigation {
+        bottom: 20px;
+      }
+
+      .floating-point {
+        top: 50px;
+        right: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">
+      <div class="logo-icon">
+        <i class="fas fa-circle"></i>
+      </div>
+      Cars
+    </div>
+    <nav>
+      <ul>
+        <li>Services</li>
+        <li>About us</li>
+        <li>Pricing</li>
+        <li>News</li>
+      </ul>
+    </nav>
+    <div class="contact">
+      <i class="fas fa-phone"></i>
+      <span>(01) 2131 234 567</span>
+    </div>
+  </header>
+
+  <div class="main">
+    <!-- Left Sidebar -->
+    <div class="sidebar">
+      <div class="menu-item active">
+        <h3>Colors</h3>
+      </div>
+      <div class="menu-item">
+        <h3>Engine</h3>
+      </div>
+      <div class="menu-item">
+        <h3>MPG</h3>
+      </div>
+      <div class="menu-item">
+        <h3>Tires</h3>
+      </div>
+      <div class="item-counter">
+        01<span class="total">/03</span>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="content-area">
+      <div class="premium-headline">
+        <h1>GET THE PREMIUM<br>COLLECTION</h1>
+      </div>
+
+      <div class="car-display">
+        <div class="circle-bg"></div>
+        <div class="car-image-wrapper">
+          <img src="img/bmw/pngimg.com - bmw_PNG99538.png" alt="Jaguar F-Type" class="car-image">
+        </div>
+        <div class="speed-lines">
+          <div class="speed-line"></div>
+          <div class="speed-line"></div>
+          <div class="speed-line"></div>
+        </div>
+        <div class="car-info">
+          <div class="car-badge">IMPERDICT ORCI</div>
+          <div class="car-description">
+            Enim Dolore Vitae Tincidunt Sed Aut Adipiscing
+          </div>
+        </div>
+        <div class="floating-point">
+          <div class="point-circle"></div>
+        </div>
+      </div>
+
+      <div class="navigation">
+        <div class="nav-arrow prev">
+          <i class="fas fa-chevron-left"></i>
+        </div>
+        <div class="nav-arrow next">
+          <i class="fas fa-chevron-right"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right-panel">
+      <div class="page-indicator">
+        <div class="indicator-dot active"></div>
+        <div class="indicator-dot"></div>
+        <div class="indicator-dot"></div>
+        <div class="indicator-dot"></div>
+      </div>
+      <div class="scroll-hint">
+        <span>SCROLL DOWN</span>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Car Details Bar -->
+  <div class="car-details">
+    <div class="car-model">
+      JAGUAR <span>F-TYPE</span>
+    </div>
+    <div class="car-price">
+      <span class="price-label">Regular Price:</span>
+      <span class="price-value">$49,978</span>
+    </div>
+    <div class="car-metrics">
+      <div class="metric">
+        <div class="metric-value">8900+</div>
+        <div class="metric-label">Interdum<br>aenean orci</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">4.9</div>
+        <div class="rating-stars">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+        </div>
+        <div class="metric-label">Rating</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // GSAP Animations
+    // Initial animations
+    gsap.from('.premium-headline h1', {
+      duration: 1,
+      y: 50,
+      opacity: 0,
+      ease: 'power3.out',
+      delay: 0.2
+    });
+
+    gsap.from('.circle-bg', {
+      duration: 1.2,
+      scale: 0,
+      opacity: 0,
+      ease: 'elastic.out(1, 0.5)',
+      delay: 0.5
+    });
+
+    gsap.from('.car-image', {
+      duration: 1,
+      x: -100,
+      opacity: 0,
+      ease: 'power3.out',
+      delay: 0.7
+    });
+
+    gsap.from('.car-info', {
+      duration: 0.8,
+      y: 30,
+      opacity: 0,
+      ease: 'power3.out',
+      delay: 1
+    });
+
+    gsap.from('.floating-point', {
+      duration: 0.8,
+      scale: 0,
+      opacity: 0,
+      ease: 'back.out(1.7)',
+      delay: 1.2
+    });
+
+    gsap.from('.speed-lines .speed-line', {
+      duration: 0.5,
+      width: 0,
+      opacity: 0,
+      stagger: 0.1,
+      ease: 'power1.out',
+      delay: 1.3
+    });
+
+    // Speed lines continuous animation
+    const speedLines = document.querySelectorAll('.speed-line');
+
+    speedLines.forEach((line, index) => {
+      gsap.to(line, {
+        width: '+=20',
+        opacity: 0,
+        duration: 1.5,
+        repeat: -1,
+        delay: index * 0.3,
+        ease: 'power2.in',
+        onComplete: function() {
+          gsap.set(line, { width: '40px', opacity: 0.7 });
+        }
+      });
+    });
+
+    // 3D Hover Effect for Car
+    const carDisplay = document.querySelector('.car-display');
+    const carImage = document.querySelector('.car-image');
+
+    carDisplay.addEventListener('mousemove', (e) => {
+      const xAxis = (window.innerWidth / 2 - e.pageX) / 30;
+      const yAxis = (window.innerHeight / 2 - e.pageY) / 30;
+
+      carImage.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg) translateZ(20px)`;
+      carImage.style.transition = 'none';
+    });
+
+    carDisplay.addEventListener('mouseleave', () => {
+      carImage.style.transform = 'rotateY(0deg) rotateX(0deg) translateZ(0)';
+      carImage.style.transition = 'transform 0.5s ease';
+    });
+
+    // Navigation functionality
+    const prevBtn = document.querySelector('.nav-arrow.prev');
+    const nextBtn = document.querySelector('.nav-arrow.next');
+    const dots = document.querySelectorAll('.indicator-dot');
+    const counter = document.querySelector('.item-counter');
+
+    // Car data
+    const cars = [
+      {
+        model: 'JAGUAR <span>F-TYPE</span>',
+        price: '$49,978',
+        image: 'img/bmw/pngimg.com - bmw_PNG99538.png',
+        color: '#ff5c35',
+        badge: 'IMPERDICT ORCI',
+        description: 'Enim Dolore Vitae Tincidunt Sed Aut Adipiscing'
+      },
+      {
+        model: 'PORSCHE <span>911</span>',
+        price: '$112,300',
+        image: 'img/gtr/api_uploads_img_car_2022_nissan_gt_r_nismo_ddb5fef642.png',
+        color: '#3565ff',
+        badge: 'VOLUTPAT ELIT',
+        description: 'Nullam quis risus eget urna mollis ornare vel eu leo'
+      },
+      {
+        model: 'FERRARI <span>488</span>',
+        price: '$302,500',
+        image: 'img/mustang/vicrez-gt500-style-front-splitter-ford-mustang-gt-ecoboost-2018-2019-2020-2021-2022-pe-122222222222.png',
+        color: '#e62b1e',
+        badge: 'PREMIUM SPORTS',
+        description: 'Aenean lacinia bibendum nulla sed consectetur'
+      },
+      {
+        model: 'MERCEDES <span>AMG GT</span>',
+        price: '$165,900',
+        image: 'img/mustang/vicrez-gt500-style-front-splitter-ford-mustang-gt-ecoboost-2018-2019-2020-2021-2022-pe-122222222222.png',
+        color: '#222222',
+        badge: 'LUXURY COUPE',
+        description: 'Cras mattis consectetur purus sit amet fermentum'
+      }
+    ];
+
+    let currentIndex = 0;
+
+    function updateCar(index) {
+      // Animate elements out
+      gsap.to('.car-image', {
+        duration: 0.4,
+        x: 100,
+        opacity: 0,
+        ease: 'power2.in',
+        onComplete: () => {
+          // Update content
+          document.querySelector('.car-image').src = cars[index].image;
+          document.querySelector('.circle-bg').style.backgroundColor = cars[index].color;
+          document.querySelector('.car-model').innerHTML = cars[index].model;
+          document.querySelector('.price-value').textContent = cars[index].price;
+          document.querySelector('.car-badge').textContent = cars[index].badge;
+          document.querySelector('.car-description').textContent = cars[index].description;
+
+          // Update counter and indicators
+          counter.innerHTML = `0${index + 1}<span class="total">/0${cars.length}</span>`;
+
+          dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+          });
+
+          // Animate elements in
+          gsap.to('.car-image', {
+            duration: 0.6,
+            x: 0,
+            opacity: 1,
+            ease: 'power2.out'
+          });
+
+          gsap.from('.car-badge, .car-description', {
+            duration: 0.5,
+            y: 20,
+            opacity: 0,
+            stagger: 0.1,
+            ease: 'power3.out'
+          });
+        }
+      });
+    }
+
+    nextBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % cars.length;
+      updateCar(currentIndex);
+    });
+
+    prevBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + cars.length) % cars.length;
+      updateCar(currentIndex);
+    });
+
+    // Make dots clickable
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        if (currentIndex !== index) {
+          currentIndex = index;
+          updateCar(currentIndex);
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>
